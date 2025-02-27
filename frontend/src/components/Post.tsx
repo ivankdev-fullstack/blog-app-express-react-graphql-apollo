@@ -20,13 +20,13 @@ import { IPost } from "../types/types";
 //   }
 // `;
 
-interface PostProps {
+interface Props {
   postData: IPost;
   username: string;
   isMyProfile: boolean;
 }
 
-export default function Post({ postData, username, isMyProfile }: PostProps) {
+export default function Post({ postData, username, isMyProfile }: Props) {
   const { title, content, published, createdAt } = postData;
   // const [publishPost] = useMutation(PUBLISH_POST);
   // const [unpublishPost] = useMutation(UNPUBLISH_POST);

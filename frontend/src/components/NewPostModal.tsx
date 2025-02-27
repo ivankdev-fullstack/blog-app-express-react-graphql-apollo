@@ -16,80 +16,84 @@
 //   }
 // `;
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Form, Link } from "react-router-dom";
+import { Button } from "./ui/button";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+import { Input } from "./ui/input";
 
 const NewPostModal = () => {
-  const [show, setShow] = useState(false);
-  const [content, setContent] = useState("");
-  const [title, setTitle] = useState("");
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const form = useForm();
 
   // const [addPost, { data, loading }] = useMutation(CREATE_POST);
 
-  // const handleClick = () => {
-  //   addPost({
-  //     variables: {
-  //       title,
-  //       content,
-  //     },
-  //   });
-  // };
+  const onSubmit = () => {
+    //   addPost({
+    //     variables: {
+    //       title,
+    //       content,
+    //     },
+    //   });
+  };
 
   return (
-    <>
-      <button
-      // onClick={handleShow}
-      >
-        Add Post
-      </button>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter email" {...field} required />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Enter password"
+                  {...field}
+                  required
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Add Post</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder=""
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </Form.Group>
+        <div className="text-sm">
+          <span className="text-neutral-600">Or</span>
+          <Link
+            to="/signup"
+            className="mx-1 text-sky-600 hover:text-sky-700 hover:underline"
+          >
+            create a new account.
+          </Link>
+        </div>
 
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label>Content</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button variant="secondary" onClick={handleClose}>
-            Close
-          </button>
-          <button variant="primary" onClick={handleClick}>
-            Add
-          </button>
-        </Modal.Footer>
-      </Modal>
-    </>
+        <div className="flex w-full justify-center">
+          <Button type="submit" className="w-[120px]">
+            Submit
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 };
 
