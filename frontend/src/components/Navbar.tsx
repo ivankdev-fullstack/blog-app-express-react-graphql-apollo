@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { IUser } from "../types/types";
 import NewPostModal from "./NewPostModal";
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 interface Props {
   user?: IUser;
@@ -22,6 +22,7 @@ const Navbar = ({ user }: Props) => {
                 </Button>
               </DialogTrigger>
               <DialogContent>
+                <DialogTitle className="mb-5">Create new post</DialogTitle>
                 <NewPostModal />
               </DialogContent>
             </Dialog>

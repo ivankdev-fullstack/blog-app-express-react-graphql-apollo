@@ -16,8 +16,7 @@
 //   }
 // `;
 
-import { useForm } from "react-hook-form";
-import { Form, Link } from "react-router-dom";
+import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import {
   FormControl,
@@ -27,6 +26,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 const NewPostModal = () => {
   const form = useForm();
@@ -43,16 +43,16 @@ const NewPostModal = () => {
   };
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="email"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Enter email" {...field} required />
+                <Input placeholder="Enter title" {...field} required />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -63,11 +63,11 @@ const NewPostModal = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Content</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Enter password"
+                <Textarea
+                  className="min-h-[150px]"
+                  placeholder="Write something to share..."
                   {...field}
                   required
                 />
@@ -77,23 +77,13 @@ const NewPostModal = () => {
           )}
         />
 
-        <div className="text-sm">
-          <span className="text-neutral-600">Or</span>
-          <Link
-            to="/signup"
-            className="mx-1 text-sky-600 hover:text-sky-700 hover:underline"
-          >
-            create a new account.
-          </Link>
-        </div>
-
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-end">
           <Button type="submit" className="w-[120px]">
-            Submit
+            Post
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 };
 
