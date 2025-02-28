@@ -11,7 +11,9 @@ interface Props {
 const Navbar = ({ user }: Props) => {
   return (
     <div className="flex items-center justify-between border-b-1 px-20 py-3">
-      <div className="text-xl font-bold">BlogApp</div>
+      <Link to="/" className="text-xl font-bold">
+        BlogApp
+      </Link>
       <div>
         {user ? (
           <div className="flex items-center gap-8">
@@ -28,7 +30,10 @@ const Navbar = ({ user }: Props) => {
             </Dialog>
 
             <div className="text-sm">
-              Hello, <span className="underline">username</span>
+              Hello,{" "}
+              <Link to={`/profile/${user.id}`} className="underline">
+                username
+              </Link>
             </div>
           </div>
         ) : (

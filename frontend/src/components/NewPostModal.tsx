@@ -66,7 +66,7 @@ const NewPostModal = () => {
               <FormLabel>Content</FormLabel>
               <FormControl>
                 <Textarea
-                  className="min-h-[150px]"
+                  className="max-h-[300px] min-h-[150px]"
                   placeholder="Write something to share..."
                   {...field}
                   required

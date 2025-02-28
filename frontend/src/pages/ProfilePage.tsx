@@ -17,8 +17,12 @@
 //   }
 // `;
 
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import Post from "@/components/Post";
+import { posts, users } from "@/data";
+import { IPost } from "@/types/types";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -38,18 +42,26 @@ const ProfilePage = () => {
   return (
     <>
       <Navbar user={profile} />
+      {/* <Navbar /> */}
 
-      {/* <div>
-        {profile.user.posts.map((post: IPost) => {
+      <div className="mt-8 mb-22 flex flex-col items-center justify-center gap-5">
+        <div className="mb-2 text-xl font-bold">
+          {profile?.user?.name} posts
+        </div>
+        {/* User posts */}
+        {posts.map((post: IPost) => {
           return (
             <Post
+              key={post.id}
               postData={post}
-              username={profile.user.name}
-              isMyProfile={profile.isMyProfile}
+              user={users[0]}
+              isMyProfile={true}
             />
           );
         })}
-      </div> */}
+      </div>
+
+      <Footer />
     </>
   );
 };
