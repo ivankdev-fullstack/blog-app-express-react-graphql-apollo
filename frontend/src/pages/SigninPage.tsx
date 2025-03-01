@@ -1,16 +1,7 @@
-// const SIGNIN = gql`
-//   mutation Signup($email: String!, $password: String!) {
-//     signin(credentials: { email: $email, password: $password }) {
-//       userErrors {
-//         message
-//       }
-//       token
-//     }
-//   }
-// `;
-
+import { SIGNIN, SigninMutationResponse } from "@/graphql/mutations/auth";
+import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -30,19 +21,32 @@ import {
 import { Input } from "../components/ui/input";
 
 const SigninPage = () => {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  const navigate = useNavigate();
+  const [signup, { error, loading }] =
+    useMutation<SigninMutationResponse>(SIGNIN);
 
-  // const [signup, { data, loading }] = useMutation(SIGNUP);
+  const onSubmit = async (formData: any) => {
+    if (!loading) {
+      const { data } = await signup({
+        variables: {
+          ...formData,
+        },
+      });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+      if ((data?.signin.errors || error) && !data?.signin?.token) {
+        console.log(data?.signin.errors || error);
+        return;
+      }
 
-    //   signup({
-    //     variables: {
-    //       email,
-    //       password,
-    //     },
-    //   });
+      localStorage.setItem("token", data?.signin?.token!);
+      navigate("/");
+    }
   };
 
   return (

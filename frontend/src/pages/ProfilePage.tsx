@@ -1,64 +1,48 @@
-// const GET_PROFILE = gql`
-//   query GetProfile($userId: ID!) {
-//     profile(userId: $userId) {
-//       bio
-//       isMyProfile
-//       user {
-//         name
-//         posts {
-//           id
-//           title
-//           content
-//           createdAt
-//           published
-//         }
-//       }
-//     }
-//   }
-// `;
-
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Post from "@/components/Post";
-import { posts, users } from "@/data";
+import {
+  GET_PROFILE,
+  GetProfileQueryResponse,
+} from "@/graphql/queries/get-profile";
 import { IPost } from "@/types/types";
-import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { Navigate, useParams } from "react-router-dom";
 
 const ProfilePage = () => {
   const { id } = useParams();
+  const { data, error, loading } = useQuery<GetProfileQueryResponse>(
+    GET_PROFILE,
+    {
+      variables: {
+        userId: id,
+      },
+    },
+  );
 
-  // const { data, error, loading } = useQuery(GET_PROFILE, {
-  //   variables: {
-  //     userId: id,
-  //   },
-  // });
-
-  // if (error) return <div>error page</div>;
-  // if (loading) return <div>Spinner...</div>;
-
-  // const { profile } = data;
-  const profile: any = {};
+  if (!data?.profile?.user) return <Navigate to="/" />;
+  if (error) return <div>error page</div>;
+  if (loading) return <div>Spinner...</div>;
 
   return (
     <>
-      <Navbar user={profile} />
-      {/* <Navbar /> */}
+      <Navbar />
 
       <div className="mt-8 mb-22 flex flex-col items-center justify-center gap-5">
         <div className="mb-2 text-xl font-bold">
-          {profile?.user?.name} posts
+          {data.profile.user.name} posts
         </div>
-        {/* User posts */}
-        {posts.map((post: IPost) => {
+        {data.profile.user.posts.map((post: IPost) => {
           return (
             <Post
               key={post.id}
               postData={post}
-              user={users[0]}
-              isMyProfile={true}
+              user={post.user}
+              isMyProfile={data.profile.isMyProfile}
             />
           );
         })}
+        {/* TODO: if no posts */}
       </div>
 
       <Footer />

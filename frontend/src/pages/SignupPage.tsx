@@ -1,23 +1,3 @@
-// const SIGNUP = gql`
-//   mutation Signup(
-//     $email: String!
-//     $password: String!
-//     $name: String!
-//     $bio: String!
-//   ) {
-//     signup(
-//       credentials: { email: $email, password: $password }
-//       name: $name
-//       bio: $bio
-//     ) {
-//       userErrors {
-//         message
-//       }
-//       token
-//     }
-//   }
-// `;
-
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";

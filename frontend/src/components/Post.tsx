@@ -26,10 +26,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 interface Props {
   postData: IPost;
   user: IUser;
-  isMyProfile: boolean;
+  isMyProfile?: boolean;
 }
 
-export default function Post({ postData, user, isMyProfile }: Props) {
+export default function Post({ postData, user, isMyProfile = false }: Props) {
   const { title, content, published, createdAt } = postData;
   // const [publishPost] = useMutation(PUBLISH_POST);
   // const [unpublishPost] = useMutation(UNPUBLISH_POST);
@@ -66,55 +66,26 @@ export default function Post({ postData, user, isMyProfile }: Props) {
   };
 
   return (
-    <div>
-      {/* {isMyProfile && published === false && (
-        <p
-          className="Post__publish"
-          onClick={() => {
-            publishPost({
-              variables: {
-                postId: id,
-              },
-            });
-          // }}
-        >
-          publish
-        </p>
-      )}
-      {isMyProfile && published === true && (
-        <p
-          className="Post__publish"
-          onClick={() => {
-            unpublishPost({
-              variables: {
-                postId: id,
-              },
-            });
-          // }}
-        >
-          unpublish
-        </p>
-      )} */}
-      <Card className="w-[600px] min-w-[400px]">
-        <CardHeader>
-          <CardTitle>
-            <div className="flex items-center justify-between">
-              <span className="mr-5 overflow-hidden text-nowrap">{title}</span>
-              {isMyProfile && renderPostActions()}
-            </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col items-end">
-            <p className="max-h-[150px] min-h-[60px] w-full overflow-hidden">
-              {content}
-            </p>
-            <span className="text-neutral-600 italic">
-              {formatedDate} by {user.name}
-            </span>
+    <Card className="w-[600px] min-w-[400px]">
+      <CardHeader>
+        <CardTitle>
+          <div className="flex items-center justify-between">
+            <span className="mr-5 overflow-hidden text-nowrap">{title}</span>
+            {isMyProfile && renderPostActions()}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col items-end">
+          <p className="max-h-[150px] min-h-[60px] w-full overflow-hidden">
+            {content}
+          </p>
+          <span className="text-neutral-600 italic">
+            {formatedDate} by {user.name}
+            {/* FIX DATE */}
+          </span>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

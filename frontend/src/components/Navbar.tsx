@@ -1,14 +1,12 @@
+import { useAuth } from "@/auth/AuthContext";
 import { Link } from "react-router-dom";
-import { IUser } from "../types/types";
 import NewPostModal from "./NewPostModal";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 
-interface Props {
-  user?: IUser;
-}
+const Navbar = () => {
+  const { user } = useAuth();
 
-const Navbar = ({ user }: Props) => {
   return (
     <div className="flex items-center justify-between border-b-1 px-20 py-3">
       <Link to="/" className="text-xl font-bold">
@@ -31,8 +29,8 @@ const Navbar = ({ user }: Props) => {
 
             <div className="text-sm">
               Hello,{" "}
-              <Link to={`/profile/${user.id}`} className="underline">
-                username
+              <Link to={`/profile/1`} className="underline">
+                {user.name}
               </Link>
             </div>
           </div>

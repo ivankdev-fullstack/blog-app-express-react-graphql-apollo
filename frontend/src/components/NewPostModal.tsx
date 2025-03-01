@@ -1,7 +1,7 @@
 // const CREATE_POST = gql`
 //   mutation CreatePost($title: String!, $content: String!) {
 //     postCreate(post: { title: $title, content: $content }) {
-//       userErrors {
+//       errors {
 //         message
 //       }
 //       post {

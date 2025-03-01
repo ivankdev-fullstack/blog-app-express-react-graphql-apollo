@@ -4,12 +4,19 @@ export interface IPost {
   content: string;
   published: boolean;
   createdAt: string;
-  // user: IUser
+  user: IUser;
 }
 
 export interface IUser {
   id: string;
   name: string;
   email: string;
-  // posts: IPost[]
+  posts: IPost[];
+}
+
+export interface IProfile {
+  id: string;
+  bio: string;
+  isMyProfile: boolean;
+  user: IUser;
 }
