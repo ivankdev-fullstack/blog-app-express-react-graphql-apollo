@@ -47,12 +47,12 @@ export const typeDefs = `
   }
 
   type PostPayload {
-    userErrors: [UserError!]!
+    errors: [UserError!]!
     post: Post
   }
 
   type AuthPayload {
-    userErrors: [UserError!]!
+    errors: [UserError!]!
     token: String
   }
 

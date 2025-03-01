@@ -19,7 +19,7 @@ export const canUserMutatePost = async ({
 
   if (!user) {
     return {
-      userErrors: [
+      errors: [
         {
           message: "User not found",
         },
@@ -36,7 +36,7 @@ export const canUserMutatePost = async ({
 
   if (post?.authorId !== user.id) {
     return {
-      userErrors: [
+      errors: [
         {
           message: "Post not owned by user",
         },

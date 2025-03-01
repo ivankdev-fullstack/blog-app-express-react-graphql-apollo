@@ -22,7 +22,7 @@ interface SigninArgs {
 }
 
 interface UserPayload {
-  userErrors: {
+  errors: {
     message: string;
   }[];
   token: string | null;
@@ -42,7 +42,7 @@ export const authResolvers = {
 
     if (!isEmail) {
       return {
-        userErrors: [
+        errors: [
           {
             message: "Invalid email",
           },
@@ -59,7 +59,7 @@ export const authResolvers = {
 
     if (isExist) {
       return {
-        userErrors: [
+        errors: [
           {
             message: "This email has been already taken.",
           },
@@ -74,7 +74,7 @@ export const authResolvers = {
 
     if (!isValidPassword) {
       return {
-        userErrors: [
+        errors: [
           {
             message: "Invalid password",
           },
@@ -85,7 +85,7 @@ export const authResolvers = {
 
     if (!name || !bio) {
       return {
-        userErrors: [
+        errors: [
           {
             message: "Invalid name or bio",
           },
@@ -112,7 +112,7 @@ export const authResolvers = {
     });
 
     return {
-      userErrors: [],
+      errors: [],
       token: JWT.sign(
         {
           userId: user.id,
@@ -139,7 +139,7 @@ export const authResolvers = {
 
     if (!user) {
       return {
-        userErrors: [{ message: "Invalid credentials" }],
+        errors: [{ message: "Invalid credentials" }],
         token: null,
       };
     }
@@ -148,13 +148,13 @@ export const authResolvers = {
 
     if (!isMatch) {
       return {
-        userErrors: [{ message: "Invalid credentials" }],
+        errors: [{ message: "Invalid credentials" }],
         token: null,
       };
     }
 
     return {
-      userErrors: [],
+      errors: [],
       token: JWT.sign({ userId: user.id }, JWT_SECRET!, {
         expiresIn: 3600000,
       }),
