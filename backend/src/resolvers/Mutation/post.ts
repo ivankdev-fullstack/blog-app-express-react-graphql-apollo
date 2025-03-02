@@ -50,7 +50,7 @@ export const postResolvers = {
       data: {
         title,
         content,
-        authorId: userInfo.userId,
+        authorId: Number(userInfo.userId),
       },
     });
 
