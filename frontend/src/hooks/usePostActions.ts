@@ -4,8 +4,8 @@ import { GET_RECENT_POSTS } from "@/graphql/queries/get-recent-posts";
 import { useMutation } from "@apollo/client";
 
 interface Props {
-  postId: string;
-  userId: string;
+  postId: number;
+  userId: number;
 }
 
 interface UsePostActionsResponse {

@@ -59,7 +59,7 @@ export const postResolvers = {
 
   postUpdate: async (
     _: any,
-    { post, postId }: { postId: string; post: PostArgs["post"] },
+    { post, postId }: { postId: number; post: PostArgs["post"] },
     { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
     if (!userInfo) return handleUnauthenticated();
@@ -96,7 +96,7 @@ export const postResolvers = {
 
   postDelete: async (
     _: any,
-    { postId }: { postId: string },
+    { postId }: { postId: number },
     { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
     if (!userInfo) return handleUnauthenticated();
@@ -122,7 +122,7 @@ export const postResolvers = {
 
   postPublish: async (
     _: any,
-    { postId }: { postId: string },
+    { postId }: { postId: number },
     { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
     if (!userInfo) return handleUnauthenticated();
@@ -144,7 +144,7 @@ export const postResolvers = {
 
   postUnpublish: async (
     _: any,
-    { postId }: { postId: string },
+    { postId }: { postId: number },
     { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
     if (!userInfo) return handleUnauthenticated();

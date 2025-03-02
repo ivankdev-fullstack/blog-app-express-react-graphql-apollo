@@ -18,7 +18,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
 interface Props {
-  userId?: string;
+  userId?: number;
   onClose: () => void;
 }
 
@@ -86,8 +86,8 @@ const NewPostModal = ({ userId, onClose }: Props) => {
         />
 
         <div className="flex w-full justify-end">
-          <Button type="submit" className="w-[120px]">
-            Post
+          <Button type="submit" className="w-[120px]" disabled={loading}>
+            {loading ? "Posting..." : "Post"}
           </Button>
         </div>
       </form>

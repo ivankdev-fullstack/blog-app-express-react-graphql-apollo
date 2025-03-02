@@ -11,7 +11,7 @@ export const Query = {
 
   profile: async (
     _: any,
-    { userId }: { userId: string },
+    { userId }: { userId: number },
     { prisma, userInfo }: Context
   ) => {
     const isMyProfile = Number(userId) === userInfo?.userId;

@@ -60,7 +60,7 @@ export const authResolvers = {
 
     return {
       errors: [],
-      token: generateUserToken(user.id.toString()),
+      token: generateUserToken(user.id),
     };
   },
 
@@ -78,7 +78,7 @@ export const authResolvers = {
 
     return {
       errors: [],
-      token: generateUserToken(user.id.toString()),
+      token: generateUserToken(user.id),
     };
   },
 };

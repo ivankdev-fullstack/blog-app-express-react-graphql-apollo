@@ -5,7 +5,7 @@ import {
 import { useQuery } from "@apollo/client";
 
 interface Props {
-  userId: string;
+  userId: number;
 }
 
 interface UsePostActionsResponse {

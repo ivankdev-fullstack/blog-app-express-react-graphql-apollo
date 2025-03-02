@@ -141,8 +141,8 @@ const SignupPage = () => {
               </div>
 
               <div className="flex w-full justify-center">
-                <Button type="submit" className="w-[120px]">
-                  Submit
+                <Button type="submit" className="w-[120px]" disabled={loading}>
+                  {loading ? "Loading..." : "Submit"}
                 </Button>
               </div>
             </form>

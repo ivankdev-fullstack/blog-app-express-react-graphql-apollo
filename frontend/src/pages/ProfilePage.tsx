@@ -8,7 +8,7 @@ import { Navigate, useParams } from "react-router-dom";
 
 const ProfilePage = () => {
   const { id } = useParams();
-  const { data, error, loading } = useProfile({ userId: id! });
+  const { data, error, loading } = useProfile({ userId: Number(id) });
 
   if (!loading && !data?.profile?.user) return <Navigate to="/" />;
   if (loading) return <div>Spinner...</div>;

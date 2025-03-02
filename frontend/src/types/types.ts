@@ -1,5 +1,5 @@
 export interface IPost {
-  id: string;
+  id: number;
   title: string;
   content: string;
   published: boolean;
@@ -8,14 +8,14 @@ export interface IPost {
 }
 
 export interface IUser {
-  id: string;
+  id: number;
   username: string;
   email: string;
   posts: IPost[];
 }
 
 export interface IProfile {
-  id: string;
+  id: number;
   bio: string;
   isMyProfile: boolean;
   user: IUser;
