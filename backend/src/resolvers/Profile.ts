@@ -9,7 +9,7 @@ interface ProfileParentType {
 export const Profile = {
   user: async (parent: ProfileParentType, _: unknown, { prisma }: Context) => {
     return prisma.user.findUnique({
-      where: { id: parent.userId },
+      where: { id: Number(parent.userId) },
     });
   },
 };

@@ -12,7 +12,7 @@ export const canUserMutatePost = async ({
   prisma,
 }: CanUserMutatePostParams) => {
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { id: Number(userId) },
   });
 
   if (!user) {
