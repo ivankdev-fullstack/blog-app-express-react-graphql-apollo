@@ -12,36 +12,26 @@ export const canUserMutatePost = async ({
   prisma,
 }: CanUserMutatePostParams) => {
   const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
+    where: { id: userId },
   });
 
   if (!user) {
     return {
-      errors: [
-        {
-          message: "User not found",
-        },
-      ],
+      errors: [{ message: "User not found" }],
       post: null,
     };
   }
 
   const post = await prisma.post.findUnique({
-    where: {
-      id: postId,
-    },
+    where: { id: postId },
   });
 
-  if (post?.authorId !== user.id) {
+  if (!post || post.authorId !== user.id) {
     return {
-      errors: [
-        {
-          message: "Post not owned by user",
-        },
-      ],
+      errors: [{ message: "Post not owned by user" }],
       post: null,
     };
   }
+
+  return { errors: [], post };
 };

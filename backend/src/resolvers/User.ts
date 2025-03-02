@@ -5,32 +5,24 @@ interface UserParentType {
 }
 
 export const User = {
-  posts: (parent: UserParentType, _: any, { userInfo, prisma }: Context) => {
+  posts: async (
+    parent: UserParentType,
+    _: any,
+    { userInfo, prisma }: Context
+  ) => {
     const isOwnProfile = parent.id === userInfo?.userId;
-
-    if (!isOwnProfile) {
-      return prisma.post.findMany({
-        where: {
-          authorId: parent.id,
-          published: true,
-        },
-        orderBy: [
-          {
-            createdAt: "desc",
-          },
-        ],
-      });
-    }
-
-    return prisma.post.findMany({
+    const postFilter = {
       where: {
         authorId: parent.id,
+        ...(isOwnProfile ? {} : { published: true }),
       },
       orderBy: [
         {
-          createdAt: "desc",
+          createdAt: "desc" as const,
         },
       ],
-    });
+    };
+
+    return prisma.post.findMany(postFilter);
   },
 };

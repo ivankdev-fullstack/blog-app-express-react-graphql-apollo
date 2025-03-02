@@ -2,6 +2,8 @@ import {
   CREATE_POST,
   CreatePostMutationResponse,
 } from "@/graphql/mutations/create-post";
+import { GET_PROFILE } from "@/graphql/queries/get-profile";
+import { GET_RECENT_POSTS } from "@/graphql/queries/get-recent-posts";
 import { useMutation } from "@apollo/client";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "./ui/button";
@@ -15,30 +17,36 @@ import {
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
-const NewPostModal = () => {
+interface Props {
+  userId?: string;
+  onClose: () => void;
+}
+
+const NewPostModal = ({ userId, onClose }: Props) => {
   const form = useForm({
     defaultValues: {
       title: "",
       content: "",
     },
   });
-  const [addPost, { loading, error }] =
-    useMutation<CreatePostMutationResponse>(CREATE_POST);
+  const [addPost, { loading }] = useMutation<CreatePostMutationResponse>(
+    CREATE_POST,
+    {
+      refetchQueries: [
+        { query: GET_PROFILE, variables: { userId } },
+        { query: GET_RECENT_POSTS },
+      ],
+    },
+  );
 
   const onSubmit = async (formData: any) => {
     if (!loading) {
-      const { data } = await addPost({
+      await addPost({
         variables: {
           ...formData,
         },
       });
-
-      // if ((data?.postCreate.errors || error) && !data?.postCreate?.token) {
-      //   console.log(data?.postCreate.errors || error);
-      //   return;
-      // }
-
-      // window.location.href = "/";
+      onClose();
     }
   };
 

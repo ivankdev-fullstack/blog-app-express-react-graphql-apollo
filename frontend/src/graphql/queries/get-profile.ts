@@ -11,6 +11,7 @@ export const GET_PROFILE = gql`
       bio
       isMyProfile
       user {
+        id
         username
         posts {
           id

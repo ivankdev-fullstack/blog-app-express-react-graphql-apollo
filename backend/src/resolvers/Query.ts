@@ -5,9 +5,7 @@ export const Query = {
     if (!userInfo) return null;
 
     return prisma.user.findUnique({
-      where: {
-        id: userInfo.userId,
-      },
+      where: { id: userInfo.userId },
     });
   },
 
@@ -18,29 +16,18 @@ export const Query = {
   ) => {
     const isMyProfile = Number(userId) === userInfo?.userId;
     const profile = await prisma.profile.findUnique({
-      where: {
-        userId: Number(userId),
-      },
+      where: { userId: Number(userId) },
     });
 
     if (!profile) return null;
 
-    return {
-      ...profile,
-      isMyProfile,
-    };
+    return { ...profile, isMyProfile };
   },
 
   posts: (_: any, __: any, { prisma }: Context) => {
     return prisma.post.findMany({
-      where: {
-        published: true,
-      },
-      orderBy: [
-        {
-          createdAt: "desc",
-        },
-      ],
+      where: { published: true },
+      orderBy: [{ createdAt: "desc" }],
     });
   },
 };

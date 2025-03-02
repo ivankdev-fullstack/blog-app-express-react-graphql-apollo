@@ -39,13 +39,8 @@ async function startGraphQLServer() {
     "/graphql",
     expressMiddleware(server, {
       context: async ({ req }): Promise<Context> => {
-        try {
-          const userInfo = getUserFromToken(req.headers.authorization || "");
-          return { prisma, userInfo };
-        } catch (err) {
-          console.log(err);
-          throw Error("Error in ExpressMiddleware." + err);
-        }
+        const userInfo = getUserFromToken(req.headers.authorization || "");
+        return { prisma, userInfo };
       },
     })
   );

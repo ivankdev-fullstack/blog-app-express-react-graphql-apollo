@@ -1,34 +1,30 @@
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
-import JWT from "jsonwebtoken";
-import validator from "validator";
 import { Context } from "../../server";
+import { createErrorPayload } from "../../utils/createErrorPayload";
+import { generateUserToken } from "../../utils/generateUserToken";
+import { validateEmail, validatePassword } from "../../utils/inputValidators";
 dotenv.config();
 
+interface Credentials {
+  email: string;
+  password: string;
+}
+
 interface SignupArgs {
-  credentials: {
-    email: string;
-    password: string;
-  };
+  credentials: Credentials;
   username: string;
   bio: string;
 }
 
 interface SigninArgs {
-  credentials: {
-    email: string;
-    password: string;
-  };
+  credentials: Credentials;
 }
 
-interface UserPayload {
-  errors: {
-    message: string;
-  }[];
+export interface UserPayload {
+  errors: { message: string }[];
   token: string | null;
 }
-
-const { JWT_SECRET } = process.env;
 
 export const authResolvers = {
   signup: async (
@@ -37,92 +33,37 @@ export const authResolvers = {
     { prisma }: Context
   ): Promise<UserPayload> => {
     const { email, password } = credentials;
-    const isEmail = validator.isEmail(email);
 
-    if (!isEmail) {
-      return {
-        errors: [
-          {
-            message: "Invalid email",
-          },
-        ],
-        token: null,
-      };
+    if (!validateEmail(email)) {
+      return createErrorPayload("Invalid email");
     }
 
-    const isExist = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (isExist) {
-      return {
-        errors: [
-          {
-            message: "This email has been already taken.",
-          },
-        ],
-        token: null,
-      };
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      return createErrorPayload("This email has been already taken.");
     }
-
-    const isValidPassword = validator.isLength(password, {
-      min: 5,
-    });
-
-    if (!isValidPassword) {
-      return {
-        errors: [
-          {
-            message: "Invalid password",
-          },
-        ],
-        token: null,
-      };
+    if (!validatePassword(password)) {
+      return createErrorPayload("Invalid password");
     }
-
     if (!username || !bio) {
-      return {
-        errors: [
-          {
-            message: "Invalid username or bio",
-          },
-        ],
-        token: null,
-      };
+      return createErrorPayload("Invalid username or bio");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = await prisma.user.create({
-      data: {
-        email,
-        username,
-        password: hashedPassword,
-      },
+      data: { email, username, password: hashedPassword },
     });
 
     await prisma.profile.create({
-      data: {
-        bio,
-        userId: user.id,
-      },
+      data: { bio, userId: user.id },
     });
 
     return {
       errors: [],
-      token: JWT.sign(
-        {
-          userId: user.id,
-        },
-        JWT_SECRET!,
-        {
-          expiresIn: 3600000,
-        }
-      ),
+      token: generateUserToken(user.id.toString()),
     };
   },
+
   signin: async (
     _: any,
     { credentials }: SigninArgs,
@@ -130,33 +71,14 @@ export const authResolvers = {
   ): Promise<UserPayload> => {
     const { email, password } = credentials;
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      return {
-        errors: [{ message: "Invalid credentials" }],
-        token: null,
-      };
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return {
-        errors: [{ message: "Invalid credentials" }],
-        token: null,
-      };
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return createErrorPayload("Invalid credentials");
     }
 
     return {
       errors: [],
-      token: JWT.sign({ userId: user.id }, JWT_SECRET!, {
-        expiresIn: 3600000,
-      }),
+      token: generateUserToken(user.id.toString()),
     };
   },
 };

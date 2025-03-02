@@ -5,7 +5,7 @@ interface PostParentType {
 }
 
 export const Post = {
-  user: (parent: PostParentType, _: any) => {
-    return userLoader.load(parent.authorId);
+  user: async (parent: PostParentType) => {
+    return await userLoader.load(parent.authorId);
   },
 };
