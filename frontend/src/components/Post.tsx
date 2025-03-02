@@ -1,3 +1,4 @@
+import { formatDate } from "@/utils/formatDate";
 import { IPost, IUser } from "../types/types";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -33,12 +34,9 @@ export default function Post({ postData, user, isMyProfile = false }: Props) {
   const { title, content, published, createdAt } = postData;
   // const [publishPost] = useMutation(PUBLISH_POST);
   // const [unpublishPost] = useMutation(UNPUBLISH_POST);
+  console.log(user);
 
-  const formatedDate = new Date(createdAt)
-    .toString()
-    .split(" ")
-    .splice(0, 3)
-    .join(" ");
+  const formatedDate = formatDate(Number(createdAt));
 
   const renderPostActions = () => {
     return (
@@ -57,7 +55,9 @@ export default function Post({ postData, user, isMyProfile = false }: Props) {
           </PopoverTrigger>
           <PopoverContent className="w-[100px] p-2">
             <div className="flex flex-col gap-2">
-              <Button size="sm">Delete</Button>
+              <Button size="sm" variant="outline">
+                Delete
+              </Button>
             </div>
           </PopoverContent>
         </Popover>
@@ -66,7 +66,7 @@ export default function Post({ postData, user, isMyProfile = false }: Props) {
   };
 
   return (
-    <Card className="w-[600px] min-w-[400px]">
+    <Card className="w-[600px] min-w-[400px] pb-4">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center justify-between">
@@ -80,10 +80,10 @@ export default function Post({ postData, user, isMyProfile = false }: Props) {
           <p className="max-h-[150px] min-h-[60px] w-full overflow-hidden">
             {content}
           </p>
-          <span className="text-neutral-600 italic">
-            {formatedDate} by {user.name}
-            {/* FIX DATE */}
-          </span>
+          <div className="flex w-full items-end justify-between text-sm text-neutral-600 italic">
+            <span>{formatedDate}</span>
+            <span>by {user.username}</span>
+          </div>
         </div>
       </CardContent>
     </Card>

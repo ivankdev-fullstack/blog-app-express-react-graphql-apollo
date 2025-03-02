@@ -3,13 +3,13 @@ export interface IPost {
   title: string;
   content: string;
   published: boolean;
-  createdAt: string;
   user: IUser;
+  createdAt: string;
 }
 
 export interface IUser {
   id: string;
-  name: string;
+  username: string;
   email: string;
   posts: IPost[];
 }

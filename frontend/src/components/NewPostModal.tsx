@@ -1,21 +1,8 @@
-// const CREATE_POST = gql`
-//   mutation CreatePost($title: String!, $content: String!) {
-//     postCreate(post: { title: $title, content: $content }) {
-//       errors {
-//         message
-//       }
-//       post {
-//         title
-//         createdAt
-//         content
-//         user {
-//           name
-//         }
-//       }
-//     }
-//   }
-// `;
-
+import {
+  CREATE_POST,
+  CreatePostMutationResponse,
+} from "@/graphql/mutations/create-post";
+import { useMutation } from "@apollo/client";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import {
@@ -29,17 +16,30 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
 const NewPostModal = () => {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
+  const [addPost, { loading, error }] =
+    useMutation<CreatePostMutationResponse>(CREATE_POST);
 
-  // const [addPost, { data, loading }] = useMutation(CREATE_POST);
+  const onSubmit = async (formData: any) => {
+    if (!loading) {
+      const { data } = await addPost({
+        variables: {
+          ...formData,
+        },
+      });
 
-  const onSubmit = () => {
-    //   addPost({
-    //     variables: {
-    //       title,
-    //       content,
-    //     },
-    //   });
+      // if ((data?.postCreate.errors || error) && !data?.postCreate?.token) {
+      //   console.log(data?.postCreate.errors || error);
+      //   return;
+      // }
+
+      // window.location.href = "/";
+    }
   };
 
   return (
@@ -60,7 +60,7 @@ const NewPostModal = () => {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="content"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Content</FormLabel>

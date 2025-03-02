@@ -29,8 +29,8 @@ const Navbar = () => {
 
             <div className="text-sm">
               Hello,{" "}
-              <Link to={`/profile/1`} className="underline">
-                {user.name}
+              <Link to={`/profile/${user.id}`} className="underline">
+                {user.username}
               </Link>
             </div>
           </div>

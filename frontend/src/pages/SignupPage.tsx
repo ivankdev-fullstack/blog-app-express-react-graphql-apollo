@@ -1,3 +1,5 @@
+import { SIGNUP, SignupMutationResponse } from "@/graphql/mutations/auth";
+import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
@@ -20,21 +22,33 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 
 const SignupPage = () => {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      bio: "",
+    },
+  });
+  const [signup, { loading, error }] =
+    useMutation<SignupMutationResponse>(SIGNUP);
 
-  // const [signup, { data, loading }] = useMutation(SIGNUP);
+  const onSubmit = async (formData: any) => {
+    if (!loading) {
+      const { data } = await signup({
+        variables: {
+          ...formData,
+        },
+      });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+      if ((data?.signup.errors || error) && !data?.signup?.token) {
+        console.log(data?.signup.errors || error);
+        return;
+      }
 
-    // signup({
-    //   variables: {
-    //     email,
-    //     password,
-    //     name,
-    //     bio,
-    //   },
-    // });
+      localStorage.setItem("token", data?.signup?.token!);
+      window.location.href = "/";
+    }
   };
 
   return (
@@ -100,7 +114,7 @@ const SignupPage = () => {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="bio"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Bio</FormLabel>

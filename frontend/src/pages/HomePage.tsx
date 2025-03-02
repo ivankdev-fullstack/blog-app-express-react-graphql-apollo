@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Post from "@/components/Post";
+import Wrapper from "@/components/Wrapper";
 import {
   GET_RECENT_POSTS,
   GetRecentPostsQueryResponse,
@@ -16,10 +17,10 @@ const HomePage = () => {
   if (loading) return <div>Spinner...</div>;
 
   return (
-    <>
+    <Wrapper>
       <Navbar />
 
-      <div className="mx-auto mt-8 mb-22 flex max-w-[1280px] flex-col items-center justify-center gap-5">
+      <div className="mx-auto mt-8 mb-22 flex max-w-[1280px] flex-grow flex-col items-center gap-5">
         <div className="mb-2 text-xl font-bold">Recent posts</div>
         <div className="flex flex-wrap justify-center gap-5">
           {data?.posts.map((post: IPost) => {
@@ -30,7 +31,7 @@ const HomePage = () => {
       </div>
 
       <Footer />
-    </>
+    </Wrapper>
   );
 };
 

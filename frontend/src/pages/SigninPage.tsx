@@ -1,7 +1,7 @@
 import { SIGNIN, SigninMutationResponse } from "@/graphql/mutations/auth";
 import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -27,13 +27,12 @@ const SigninPage = () => {
       password: "",
     },
   });
-  const navigate = useNavigate();
-  const [signup, { error, loading }] =
+  const [signin, { loading, error }] =
     useMutation<SigninMutationResponse>(SIGNIN);
 
   const onSubmit = async (formData: any) => {
     if (!loading) {
-      const { data } = await signup({
+      const { data } = await signin({
         variables: {
           ...formData,
         },
@@ -45,7 +44,7 @@ const SigninPage = () => {
       }
 
       localStorage.setItem("token", data?.signin?.token!);
-      navigate("/");
+      window.location.href = "/";
     }
   };
 

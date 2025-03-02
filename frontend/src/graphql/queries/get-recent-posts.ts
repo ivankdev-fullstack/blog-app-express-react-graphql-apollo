@@ -15,7 +15,7 @@ export const GET_RECENT_POSTS = gql`
       published
       user {
         id
-        name
+        username
       }
     }
   }

@@ -11,13 +11,13 @@ export const GET_PROFILE = gql`
       bio
       isMyProfile
       user {
-        name
+        username
         posts {
           id
           title
           content
-          createdAt
           published
+          createdAt
         }
       }
     }
