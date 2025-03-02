@@ -13,7 +13,7 @@ export const typeDefs = `
     postUnpublish(postId: ID!): PostPayload!
     signup(
       credentials: CredentialsInput!
-      name: String!
+      username: String!
       bio: String!
     ): AuthPayload!
     signin(credentials: CredentialsInput!): AuthPayload!
@@ -30,7 +30,7 @@ export const typeDefs = `
 
   type User {
     id: ID!
-    name: String!
+    username: String!
     email: String!
     posts: [Post!]!
   }

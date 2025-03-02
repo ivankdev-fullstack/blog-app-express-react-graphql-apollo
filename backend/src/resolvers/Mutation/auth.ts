@@ -10,7 +10,7 @@ interface SignupArgs {
     email: string;
     password: string;
   };
-  name: string;
+  username: string;
   bio: string;
 }
 
@@ -33,11 +33,10 @@ const { JWT_SECRET } = process.env;
 export const authResolvers = {
   signup: async (
     _: any,
-    { credentials, name, bio }: SignupArgs,
+    { credentials, username, bio }: SignupArgs,
     { prisma }: Context
   ): Promise<UserPayload> => {
     const { email, password } = credentials;
-
     const isEmail = validator.isEmail(email);
 
     if (!isEmail) {
@@ -83,11 +82,11 @@ export const authResolvers = {
       };
     }
 
-    if (!name || !bio) {
+    if (!username || !bio) {
       return {
         errors: [
           {
-            message: "Invalid name or bio",
+            message: "Invalid username or bio",
           },
         ],
         token: null,
@@ -99,7 +98,7 @@ export const authResolvers = {
     const user = await prisma.user.create({
       data: {
         email,
-        name,
+        username,
         password: hashedPassword,
       },
     });
